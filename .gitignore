@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+3rdparty/*
+!3rdparty/asio-1.28.0.tar.gz
+bin/
+lib/
+build/
+include/spdlog-1.13.0

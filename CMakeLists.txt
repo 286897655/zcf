@@ -24,7 +24,7 @@ message(STATUS "BIN_DIR:${BIN_DIR},LIB_DIR:${LIB_DIR}")
 SET(EXECUTABLE_OUTPUT_PATH ${BIN_DIR})
 SET(LIBRARY_OUTPUT_PATH ${LIB_DIR})
 
-#add_subdirectory(src)
+add_subdirectory(src)
 
 add_subdirectory(app)
 

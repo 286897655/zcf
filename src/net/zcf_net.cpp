@@ -1,0 +1,168 @@
+#include "zcf/net/zcf_net.hpp"
+#include "zcf/log/zcf_log.h"
+#include <arpa/inet.h>
+
+namespace zcf{
+
+namespace socket{
+    int cmp_sockaddr(const struct sockaddr* first,const struct sockaddr* second){
+        return cmp_sockaddr((const struct sockaddr_storage*)first,(const struct sockaddr_storage*)second);
+    }
+
+    int cmp_sockaddr(const struct sockaddr_storage* first,const struct sockaddr_storage* second){
+        if (first->ss_family == AF_INET && second->ss_family == AF_INET) {
+            struct sockaddr_in *sa, *sb;
+
+            sa = (struct sockaddr_in *) first;
+            sb = (struct sockaddr_in *) second;
+
+            return sa->sin_addr.s_addr == sb->sin_addr.s_addr;
+        } if (first->ss_family == AF_INET6 && second->ss_family == AF_INET6) {
+            struct sockaddr_in6 *sa, *sb;
+
+            sa = (struct sockaddr_in6 *) first;
+            sb = (struct sockaddr_in6 *) second;
+
+            return ::memcmp(sa->sin6_addr.s6_addr, sb->sin6_addr.s6_addr, sizeof(sa->sin6_addr.s6_addr)) == 0;
+        }
+
+        return 0;
+    }
+
+    static std::string inet_ntop_l(int AF,const void* addr){
+        std::string ret;
+        ret.resize(128);
+        if (!inet_ntop(AF, addr, (char *) ret.data(), ret.size())) {
+            ret.clear();
+        } else {
+            ret.resize(strlen(ret.data()));
+        }
+        return ret;
+    }
+
+    std::string retrieve_ip(const struct sockaddr *addr){
+        switch (addr->sa_family)
+        {
+        case AF_INET:
+            return inet_ntop_l(AF_INET, &(((struct sockaddr_in *)addr)->sin_addr));
+            break;
+        case AF_INET6:
+            if (IN6_IS_ADDR_V4MAPPED(&((struct sockaddr_in6 *)addr)->sin6_addr)) {
+                struct in_addr addr4;
+                ::memcpy(&addr4, 12 + (char *)&(((struct sockaddr_in6 *)addr)->sin6_addr), 4);
+                return inet_ntop_l(AF_INET,&addr4);
+            }
+            return inet_ntop_l(AF_INET6,&(((struct sockaddr_in6 *)addr)->sin6_addr));
+            break;
+        default:
+            ZCF_ASSERT(0);
+            break;
+        }
+        return "";
+    }
+
+    int retrieve_port(const struct sockaddr *addr){
+        switch (addr->sa_family) {
+            case AF_INET: 
+                return ntohs(((struct sockaddr_in *)addr)->sin_port);
+            break;
+            case AF_INET6: 
+                return ntohs(((struct sockaddr_in6 *)addr)->sin6_port);
+            break;
+            default: 
+                ZCF_ASSERT(0);
+            break;
+        }
+        return 0;
+    }
+
+    bool is_ip(const std::string& ip){
+        throw std::runtime_error("not support now");
+    }
+};
+
+std::shared_ptr<socket_addr> socket_addr::from(const struct sockaddr* addr,socket_type_t type){
+    if(!addr || type == socket_type_t::SOCKET_INVALID){
+        return nullptr;
+    }
+
+    std::shared_ptr<socket_addr> shared_addr = std::make_shared<socket_addr>();
+    shared_addr->socket_type_ = type;
+    shared_addr->addr_storage_.reset(new sockaddr_storage(*(sockaddr_storage*)addr));
+
+    return shared_addr;
+}
+
+std::shared_ptr<socket_addr> socket_addr::from(int fd,socket_end_t end_type,socket_type_t type){
+    if(type == socket_type_t::SOCKET_INVALID){
+        return nullptr;
+    }
+
+    std::shared_ptr<socket_addr> shared_addr = std::make_shared<socket_addr>();
+    shared_addr->addr_storage_.reset(new sockaddr_storage());
+    shared_addr->socket_type_ = type;
+    
+    socklen_t addr_len = sizeof(sockaddr_storage);
+    if(end_type == socket_end_t::SOCKET_END_PEER){// get peer/remote
+        if(::getpeername(fd,(struct sockaddr*)shared_addr->addr_storage_.get(),&addr_len) < 0){
+            zlog("fd can't getpeername:{}",fd);
+            return nullptr;
+        }
+    }else{// get local
+        if(::getsockname(fd,(struct sockaddr*)shared_addr->addr_storage_.get(),&addr_len) < 0){
+            zlog("fd can't getsockename:{}",fd);
+            return nullptr;
+        }
+    }
+    zlog("fd to ip port:{} -> {}:{}",fd,
+        socket::retrieve_ip((struct sockaddr *)(shared_addr->addr_storage_.get())),
+        socket::retrieve_port((struct sockaddr *)(shared_addr->addr_storage_.get())));
+    
+
+    return shared_addr;
+}
+
+std::string socket_addr::ip() const{
+    return socket::retrieve_ip((struct sockaddr *)addr_storage_.get());
+}
+
+int socket_addr::port() const{
+    return socket::retrieve_port((struct sockaddr *)addr_storage_.get());
+}
+
+socket_type_t socket_addr::socket_type() const{
+    return socket_type_;
+}
+
+struct sockaddr* socket_addr::addr() const{
+    return (struct sockaddr*)addr_storage_.get();
+}
+
+bool socket_addr::operator==(const socket_addr& that){
+    // socket type
+    if(socket_type_ != that.socket_type()){
+        return false;
+    }
+
+    // address port
+    if(port() != that.port()){
+        return false;
+    }
+    // address family and ip
+    return socket::cmp_sockaddr(addr(),that.addr());
+}
+
+bool socket_addr::operator!=(const socket_addr& that){
+    // socket type
+    if(socket_type_ != that.socket_type()){
+        return true;
+    }
+    // address port
+    if(port() != that.port()){
+        return true;
+    }
+    // address family and ip
+    return !socket::cmp_sockaddr(addr(),that.addr());
+}   
+
+};//!namespace zcf
