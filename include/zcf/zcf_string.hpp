@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <algorithm>
 #include <zcf/zcf_utility.hpp>
 
 namespace zcf{

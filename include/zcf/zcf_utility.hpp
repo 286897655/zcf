@@ -16,7 +16,7 @@
     ZCF_DISABLE_MOVE(Class)
 
 
-#define ZCF_UNUSED(x) (void)x;
+#define Z_UNUSED(x) (void)x;
 
 #ifndef ZLikely
     #ifdef _MSC_VER
@@ -33,5 +33,19 @@
     #define ZUnlikely(cond) __builtin_expect(!!(cond), 0) 
     #endif
 #endif
+
+#define ZDELETE_P(p) \
+    if (p) { \
+        delete p; \
+        p = NULL; \
+    } \
+    (void)0
+
+#define ZDELETE_PA(pa) \
+    if (pa) { \
+        delete[] pa; \
+        pa = NULL; \
+    } \
+    (void)0
 
 #endif //!ZCF_UTILITY_HPP_

@@ -84,7 +84,7 @@ namespace zcf{
 
     size_t alignOfPageSize(size_t want_size){
         size_t PAGE_SIZE = getPageSize();
-        ZCF_ASSERT(PAGE_SIZE);
+        Z_ASSERT(PAGE_SIZE);
 
         size_t increments = want_size / PAGE_SIZE + (want_size % PAGE_SIZE > 0);
 
@@ -163,9 +163,9 @@ namespace zcf{
         FILE* fin  = freopen("/dev/null", "r+", stdin);
         FILE* fout = freopen("/dev/null", "r+", stdout);
         FILE* ferr = freopen("/dev/null", "r+", stderr);
-        ZCF_UNUSED(fin);
-        ZCF_UNUSED(fout);
-        ZCF_UNUSED(ferr);
+        Z_UNUSED(fin);
+        Z_UNUSED(fout);
+        Z_UNUSED(ferr);
         // close(0);
         // close(1);
         // close(2);

@@ -55,7 +55,7 @@ namespace socket{
             return inet_ntop_l(AF_INET6,&(((struct sockaddr_in6 *)addr)->sin6_addr));
             break;
         default:
-            ZCF_ASSERT(0);
+            Z_ASSERT(0);
             break;
         }
         return "";
@@ -70,7 +70,7 @@ namespace socket{
                 return ntohs(((struct sockaddr_in6 *)addr)->sin6_port);
             break;
             default: 
-                ZCF_ASSERT(0);
+                Z_ASSERT(0);
             break;
         }
         return 0;

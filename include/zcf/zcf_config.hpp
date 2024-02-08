@@ -22,10 +22,10 @@
 
 //ASSERT
 #ifdef NDEBUG // release
-    #define ZCF_ASSERT(x) ((void)0)
+    #define Z_ASSERT(x) ((void)0)
 #else
     #include <assert.h>
-    #define ZCF_ASSERT(x) assert(x)
+    #define Z_ASSERT(x) assert(x)
 #endif
 
 #endif //!ZCF_CONFIG_HPP_

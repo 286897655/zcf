@@ -1,7 +1,7 @@
 #ifndef ZCF_LOG_H_
 #define ZCF_LOG_H_
 
-#include "zcf/zcf_utility.hpp"
+#include <zcf/zcf_utility.hpp>
 
 #include <spdlog/spdlog.h>
 
