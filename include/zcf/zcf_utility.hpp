@@ -48,4 +48,9 @@
     } \
     (void)0
 
+// some constant declaration
+namespace zcf{
+    extern const char kZCFVersion[];
+}//!namespace zcf
+
 #endif //!ZCF_UTILITY_HPP_

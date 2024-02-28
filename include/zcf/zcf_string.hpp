@@ -1,7 +1,9 @@
-#ifndef ZCF_STRING_HPP
-#define ZCF_STRING_HPP
+#ifndef ZCF_STRING_HPP_
+#define ZCF_STRING_HPP_
 
 #include <string>
+#include <string.h>
+#include <sstream>
 #include <memory>
 #include <algorithm>
 #include <zcf/zcf_utility.hpp>
@@ -142,4 +144,4 @@ namespace zcf{
     }
 }//!namesapce zcf
 
-#endif //!ZCF_STRING_HPP
+#endif //!ZCF_STRING_HPP_
