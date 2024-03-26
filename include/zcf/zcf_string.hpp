@@ -27,6 +27,36 @@ namespace zcf{
     };
 
     /**
+     * stoi will throw exception,so if str is sure number value 
+     * use stoi，then use this to avoid exception
+     */
+    template<typename T>
+    T str_conv2(const std::string& str){
+        T t;
+        std::istringstream iss(str);
+        iss >> t;
+
+        return t;
+    };
+
+    template<typename T>
+    T strhex_conv2(const std::string& str){
+        T t;
+        std::stringstream iss;
+        iss << std::hex << str;
+        iss >> t;
+
+        return t;
+    };
+
+    template<typename T>
+    std::string conv2_str(T t){
+        std::ostringstream oss;
+        oss << t;
+        return oss.str();
+    };
+
+    /**
     * std::string replace all
     * part replace use std::string::replace
     */
@@ -142,6 +172,12 @@ namespace zcf{
         else
             return str;
     }
+
+    /**
+     * @brief dump binary data to string as hex format
+     * 
+     */
+    std::string hexDump(const uint8_t* data,size_t size,size_t max_size = 4096);
 }//!namesapce zcf
 
 #endif //!ZCF_STRING_HPP_

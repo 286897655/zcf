@@ -1,6 +1,7 @@
 #ifndef ZCF_UTILITY_HPP_
 #define ZCF_UTILITY_HPP_
 
+#include <memory>
 #include <zcf/zcf_config.hpp>
 
 #define ZCF_DISABLE_COPY(Class) \
@@ -34,19 +35,36 @@
     #endif
 #endif
 
+#ifndef ZDELETE_P
 #define ZDELETE_P(p) \
     if (p) { \
         delete p; \
         p = NULL; \
     } \
     (void)0
+#endif
 
+#ifndef ZDELETE_PA
 #define ZDELETE_PA(pa) \
     if (pa) { \
         delete[] pa; \
         pa = NULL; \
     } \
     (void)0
+#endif
+
+namespace zcf{
+    template<typename T>
+    struct using_shared_ptr{
+        using shared = std::shared_ptr<T>;
+        using weak = std::weak_ptr<T>;
+    };
+
+    template<typename T>
+    struct using_unique_ptr{
+        using unique = std::unique_ptr<T>;
+    };
+};
 
 // some constant declaration
 namespace zcf{

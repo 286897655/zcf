@@ -5,9 +5,9 @@ project(zcf)
 include (cmake/arch.cmake)
 include (cmake/buildtype.cmake)
 
-#使能c++11
+#minimal require c++11
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)  # C++ 11 是强制要求，不会衰退至低版本
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 编译输出详细信息
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
