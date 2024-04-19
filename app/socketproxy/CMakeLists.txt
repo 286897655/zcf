@@ -4,4 +4,4 @@ INCLUDE_DIRECTORIES(${ASIO_ROOT}/include/)
 
 add_executable(socketproxy socketproxy.cpp)
 
-target_link_libraries(socketproxy pthread)
+target_link_libraries(socketproxy pthread zcf)

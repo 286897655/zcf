@@ -36,6 +36,8 @@ namespace socket{
     int retrieve_port(const struct sockaddr *addr);
 
     bool is_ip(const std::string& ip);
+
+    std::pair<std::string,int> parse_ip_colon_port(const std::string& ip_colon_port);
 };
 
 class socket_addr : public std::enable_shared_from_this<socket_addr>{

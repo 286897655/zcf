@@ -73,6 +73,12 @@ Option_ptr OptionParser::find_option(const std::string& long_name) const{
     return nullptr;
 }
 
+Option_ptr OptionParser::find_option(char short_name) const{
+    for (const auto& option : options_)
+        if (option->short_name() == short_name)
+            return option;
+    return nullptr;
+}
 
 inline void OptionParser::parse(const std::string& ini_filename)
 {

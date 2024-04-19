@@ -2,10 +2,10 @@
 #define ZCF_STRING_HPP_
 
 #include <string>
-#include <string.h>
+#include <vector>
 #include <sstream>
-#include <memory>
 #include <algorithm>
+#include <string.h>
 #include <zcf/zcf_utility.hpp>
 
 namespace zcf{

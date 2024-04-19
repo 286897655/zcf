@@ -1,5 +1,6 @@
 #include "zcf/net/zcf_net.hpp"
 #include "zcf/log/zcf_log.h"
+#include "zcf/zcf_string.hpp"
 #include <arpa/inet.h>
 
 namespace zcf{
@@ -78,6 +79,12 @@ namespace socket{
 
     bool is_ip(const std::string& ip){
         throw std::runtime_error("not support now");
+    }
+
+    std::pair<std::string,int> parse_ip_colon_port(const std::string& ip_colon_port){
+        std::vector<std::string> splits = zcf::str_split(ip_colon_port,":");
+        
+        return std::make_pair(splits[0],zcf::str_conv2<int>(splits[1]));
     }
 };
 
