@@ -22,12 +22,12 @@ std::string hexDump(const uint8_t* data,size_t size,size_t max_size){
         // data
         for(size_t i = 0;i < size;i += PRINT_NUM){
             // head of pos
-            oss << std::hex << std::setw(8) << std::setiosflags(std::ios::uppercase) << i << " ";
+            oss << std::hex << std::setfill('0') << std::setw(8) << std::setiosflags(std::ios::uppercase) << i << " ";
             // print data
             {
                 for(size_t j = 0;j< PRINT_NUM;j++){
                     if(i + j < size){
-                        oss << std::hex << std::setw(2) << std::setiosflags(std::ios::uppercase) << static_cast<int>(data[i + j]);
+                        oss << std::hex << std::setfill('0') << std::setw(2) << std::setiosflags(std::ios::uppercase) << static_cast<int>(data[i + j]);
                     }else{
                         oss << "  ";
                     }

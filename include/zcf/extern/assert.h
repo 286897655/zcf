@@ -1,5 +1,5 @@
-#ifndef ZCF_REMAP_ASSERT_HPP_
-#define ZCF_REMAP_ASSERT_HPP_
+#ifndef ZCF_EXTERN_ASSERT_HPP_
+#define ZCF_EXTERN_ASSERT_HPP_
 
 #include <stdio.h>
 

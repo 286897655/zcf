@@ -1,4 +1,4 @@
-#include "zcf/assert2throw/assert.h"
+#include "zcf/extern/assert.h"
 #include <sstream>
 #include <ostream>
 #include <stdexcept>
