@@ -1,3 +1,35 @@
+/** 
+ * @copyright Copyright © 2020-2024 code by zhaoj
+ * 
+ * LICENSE
+ * 
+ * MIT License
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+ /**
+ * @author zhaoj 286897655@qq.com
+ * @brief 
+ */
+
 #ifndef ZCF_UTILITY_HPP_
 #define ZCF_UTILITY_HPP_
 
@@ -18,6 +50,14 @@
 
 
 #define Z_UNUSED(x) (void)x;
+
+#ifndef Z_INT_SUCCESS
+#define Z_INT_SUCCESS 0
+#endif
+
+#ifndef Z_INT_FAIL
+#define Z_INT_FAIL -1
+#endif
 
 #ifndef ZLikely
     #ifdef _MSC_VER
@@ -64,7 +104,22 @@ namespace zcf{
     struct using_unique_ptr{
         using unique = std::unique_ptr<T>;
     };
-};
+
+    // make_unique support for pre c++14
+#if __cplusplus >= 201402L  // C++14 and beyond
+using std::enable_if_t;
+using std::make_unique;
+#else
+template <bool B, class T = void>
+using enable_if_t = typename std::enable_if<B, T>::type;
+
+template <typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args &&...args) {
+    static_assert(!std::is_array<T>::value, "arrays not supported");
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+#endif
+};//!namespace zcf
 
 // some constant declaration
 namespace zcf{
