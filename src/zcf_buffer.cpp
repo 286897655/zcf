@@ -30,7 +30,7 @@
  * @brief 
  */
 #include "zcf/zcf_buffer.hpp"
-
+#include "zcf/zcf_utility.hpp"
 #ifdef __x86_64__
 #include <immintrin.h>
 #elif __ARM_NEON
@@ -38,34 +38,77 @@
 #endif
 
 namespace zcf{
-void cross_byte(const uint8_t* buffer,size_t size){
-size_t count = size >> 4;
-size_t mod = size & (16 - 1);
-for(int i = 0; i < count; i++){
-    uint8_t* bytes = (uint8_t*)buffer + 16 * i;
+
+void cross_byte_u8_c(const uint8_t* buffer,size_t size)
+{
+    for(size_t i = 0; i < size; ){
+        uint16_t read = Z_RBE16(buffer + i);
+        Z_WLE16(buffer + i,read);
+
+        // cross 2 bytes each time
+        i+=2;
+    }
+};
+
+#ifdef __SSSE3__
+static void cross_byte_u8_x86_sse(const uint8_t* buffer,size_t size)
+{
+    constexpr static size_t CROSS_BYTE = 128 / 8;
+    constexpr static size_t LOG2_CROSS_BYTE = 4;
+    size_t count = size >> LOG2_CROSS_BYTE;
+    size_t mod = size & (CROSS_BYTE - 1);
+    for(size_t i = 0 ;i < count ; i++){
+        uint8_t* pos = (uint8_t*)buffer + i * CROSS_BYTE;
+        // x86 load in little endian
+        const static __m128i ShuffleRev = _mm_setr_epi8
+        (
+            1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14
+        );
+        // Load 16 bytes at once into one 16-byte register
+        __m128i load = _mm_loadu_si128(
+            reinterpret_cast<__m128i*>(pos)
+        );
+        __m128i cross = _mm_shuffle_epi8(load,ShuffleRev);
+        _mm_storeu_si128(reinterpret_cast<__m128i*>(pos),cross);
+    }
+    // un 16bytes aligned use c code
+    cross_byte_u8_c(buffer + CROSS_BYTE * count,mod);
+};
+#endif
+
+#ifdef __ARM_NEON
+#error "arm not support shuffle,do it in other"
+static void cross_byte_u8_arm_neon(const uint8_t* buffer,size_t size){
+
+
+};
+#endif
+
+void cross_byte_u8(const uint8_t* buffer,size_t size)
+{
+    Z_ASSERT(!(size & 0x01));
     #ifdef __SSSE3__
-    const __m128i ShuffleRev = _mm_set_epi8(
-			1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14
-		);
-    // Load 16 bytes at once into one 16-byte register
-    __m128i load = _mm_loadu_si128(
-        reinterpret_cast<__m128i*>(&bytes)
-    );
-    __m128i cross = _mm_shuffle_epi8(load,ShuffleRev);
-    _mm_storeu_si128(reinterpret_cast<__m128i*>(bytes),cross);
+    cross_byte_u8_x86_sse(buffer,size);
     #elif __ARM_NEON
-    // TODO arm no shuffle
-    #error "arm not support shuffle"
+    cross_byte_u8_arm_neon(buffer,size);
     #else
-    #error "not support simd"
+    cross_byte_u8_c(buffer,size);
     #endif
 }
 
-uint8_t* bytes = (uint8_t*)buffer + 16 * count;
-for(int i = 0;i < mod; i+=2){
-    uint16_t read = Z_RBE16(bytes + i);
-    Z_WLE16(bytes + i,read);
-}
+void cross_byte_s16_c(const int16_t* bytes,size_t size)
+{
+    cross_byte_u8_c((const uint8_t*)bytes,size * sizeof(int16_t));
+};
+void cross_byte_s16(const int16_t* bytes,size_t size)
+{
+    #ifdef __SSSE3__
+    cross_byte_u8_x86_sse((const uint8_t*)bytes,size * sizeof(int16_t));
+    #elif __ARM_NEON
+    cross_byte_u8_arm_neon((const uint8_t*)bytes,size * sizeof(int16_t));
+    #else
+    cross_byte_u8_c((const uint8_t*)bytes,size * sizeof(int16_t));
+    #endif
 }
 
 };//!namespace zcf

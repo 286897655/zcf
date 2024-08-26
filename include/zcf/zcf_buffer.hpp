@@ -190,9 +190,15 @@ namespace zcf{
  *       2 1 4 3 6 5 8 7
  * usefule in int16_t le<->be in simd version
  * 
- * assume size = 2*x
+ * caller assume size = 2*x
+ * 
+ * default in simd version
+ * and have c 
  */
-void cross_byte(const uint8_t* buffer,size_t size);
+void cross_byte_u8(const uint8_t* bytes,size_t size);
+void cross_byte_u8_c(const uint8_t* bytes,size_t size);
+void cross_byte_s16(const int16_t* bytes,size_t size);
+void cross_byte_s16_c(const int16_t* bytes,size_t size);
 
 class bit_buffer{
 

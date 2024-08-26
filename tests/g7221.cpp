@@ -2,31 +2,8 @@
 #include "zcf/log/zcf_log.h"
 #include "zcf/zcf_flags.hpp"
 #include <iostream>
-
-#ifndef NGM_RBE16
-#   define NGM_RBE16(x)                            \
-    (((uint16_t)((const uint8_t*)(x))[0] << 8) |   \
-                ((const uint8_t*)(x))[1])
-#endif
-#ifndef NGM_WBE16
-#   define NGM_WBE16(p, val) do {               \
-        uint16_t d = (val);                     \
-        ((uint8_t*)(p))[1] = (d);               \
-        ((uint8_t*)(p))[0] = (d)>>8;            \
-    } while(0)
-#endif
-#ifndef NGM_RLE16
-#   define NGM_RLE16(x)                           \
-    (((uint16_t)((const uint8_t*)(x))[1] << 8) |  \
-                ((const uint8_t*)(x))[0])
-#endif
-#ifndef NGM_WLE16
-#   define NGM_WLE16(p, val) do {               \
-        uint16_t d = (val);                     \
-        ((uint8_t*)(p))[0] = (d);               \
-        ((uint8_t*)(p))[1] = (d)>>8;            \
-    } while(0)
-#endif
+#include "zcf/zcf_buffer.hpp"
+#include <chrono>
 
 int main(int argc,char** argv){
     const static std::string pcm_file = "pcm.dat";
@@ -34,12 +11,18 @@ int main(int argc,char** argv){
     zcf::OptionParser option_parser("g7221 convert argument:");
     auto option_help = option_parser.add<zcf::Switch>("h","help","print g7221 help");
     auto option_file = option_parser.add<zcf::Value<std::string>>("i","input","input ");
+    auto option_simd = option_parser.add<zcf::Switch>("s","simd","use simd version");
 
     option_parser.parse(argc,argv);
     if(option_help->is_set()){
         std::cout << option_parser << std::endl;
         return 0;
     }
+    bool use_simd = false;
+    if(option_simd->is_set()){
+        use_simd = true;
+    }
+
     if(!option_file->is_set()){
         zlog("g7221 convert has no input file");
         return 0;
@@ -52,6 +35,7 @@ int main(int argc,char** argv){
     size_t g7221_size = ftell(rfile);
     fseek(rfile, 0, SEEK_SET);
     zlog("{} size {}",g7221_file,g7221_size);
+    auto start = std::chrono::high_resolution_clock::now();
 
     // g7221 16k 32kbps 按照80字节一次去解码 20ms的数据
     static constexpr size_t G7221_20MS_BUFFER = 80;
@@ -72,6 +56,8 @@ int main(int argc,char** argv){
         zlog("{} frame {} decoded {} pcm",g7221_file,i,decoded_pcm.size);
         fwrite(decoded_pcm.pcm,sizeof(int16_t),decoded_pcm.size,wfile);
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    zlog("time count:{} ms",std::chrono::duration_cast<std::chrono::milliseconds>(end -start).count());
     delete decoder;
     fflush(wfile);
     fclose(wfile);

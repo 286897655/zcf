@@ -48,17 +48,15 @@ int G722_1_Decoder::Decode(const uint8_t* g722_1_data,size_t len,pcm_buf* pcmbuf
         zlog("G722_1_Decoder input g7221 data more than max,len:{}",len);
         return Z_INT_FAIL;
     }
+    if(pack_mode_ == G722_1_BITSTREAM_PACKED_LE){
+        // we use BE packed to decode
+        // len is mutiple of g7221_frame_len_ so is mutiple of 2
+        zcf::cross_byte_u8(g722_1_data,len);
+    }
     pcmbuf->pcm = amp_buf_;
     pcmbuf->size = 0;
     int decode_count = len / g7221_frame_len_;
     for(int i = 0 ; i < decode_count ; i++){
-        if(pack_mode_ == G722_1_BITSTREAM_PACKED_LE){
-            // TODO zhaoj do simd shuffle in future
-            for(int j = 0; j < g7221_frame_len_ /2 ; j++){
-                int16_t ad_pcm = Z_RLE16(g722_1_data + i * g7221_frame_len_ + 2*j);
-                Z_WBE16(g722_1_data + i * g7221_frame_len_ + 2*j,ad_pcm);
-            }
-        }
         pcmbuf->size += g722_1_decode(decoder_,amp_buf_ + i*amp_frame_len_,g722_1_data + i * g7221_frame_len_,g7221_frame_len_);
     }
     return Z_INT_SUCCESS;
