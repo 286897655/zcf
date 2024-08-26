@@ -32,7 +32,8 @@
 
 #ifndef ZCF_BUFFER_HPP_
 #define ZCF_BUFFER_HPP_
-
+#include <stddef.h>
+#include <stdint.h>
 /*
 * R/W means read/write, B/L means big/little/native endianness.
 */
@@ -182,6 +183,16 @@
 #endif
 
 namespace zcf{
+
+/**
+ * bytes:1 2 3 4 5 6 7 8
+ * cross one byte
+ *       2 1 4 3 6 5 8 7
+ * usefule in int16_t le<->be in simd version
+ * 
+ * assume size = 2*x
+ */
+void cross_byte(const uint8_t* buffer,size_t size);
 
 class bit_buffer{
 

@@ -137,7 +137,7 @@ int main(int argc,char** argv){
             zav::pcm_buf pcmbuf;
             if(g7221_decoder->Decode(g7221_buffer,80,&pcmbuf) != Z_INT_SUCCESS){
                 zlog("decode g7221 fail");
-                return;
+                return 0;
             }
             zlog("decode g7221 {}",pcmbuf.size);
             Z_ASSERT(pcmbuf.size == 320);
