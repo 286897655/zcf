@@ -18,3 +18,6 @@ endif()
 
 add_executable(bench bench.cpp)
 target_link_libraries(bench zcf pthread)
+
+add_executable(fw fw.cpp)
+target_link_libraries(fw zcf pthread)
