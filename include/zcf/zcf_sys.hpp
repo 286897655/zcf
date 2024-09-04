@@ -36,6 +36,12 @@
 #include <string>
 
 namespace zcf{
+
+    /**
+    * warpper of popen and pclose for independent system
+    */
+    FILE* sys_popen(const std::string& command, const std::string& mode);
+    int sys_pclose(FILE* stream);
 /**
  * @brief some util func of system for portable use
  * 
@@ -58,6 +64,8 @@ namespace sys{
      */
     size_t alignOfPageSize(size_t want_size);
 
+
+
     /**
      * @brief execute a command
      * 
@@ -66,11 +74,13 @@ namespace sys{
      */
     std::string execute(const std::string& command);
 
+#ifdef ZCF_SYS_LINUX
     /**
-     * @brief run as daemon service
+     * @brief run as daemon service for linux fork 
      * 
      */
     void runDaemon();
+#endif
 
     /**
      * @brief Set the Limit(core and fd limit) And Sig Crash

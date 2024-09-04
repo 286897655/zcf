@@ -33,7 +33,12 @@
 #include "zcf/net/zcf_net.hpp"
 #include "zcf/log/zcf_log.h"
 #include "zcf/zcf_string.hpp"
+#if defined(ZCF_SYS_WINDOWS)
+#include <ws2ipdef.h>
+#include <ws2tcpip.h>
+#elif defined(ZCF_SYS_LINUX)
 #include <arpa/inet.h>
+#endif
 
 namespace zcf{
 

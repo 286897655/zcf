@@ -37,11 +37,12 @@
 #include "zcf/zcf_datetime.hpp"
 #include <sstream>
 #include <iostream>
-#if defined(_WIN32)
+#if defined(ZCF_SYS_WINDOWS)
 #include <windows.h>
+#define PATH_MAX MAX_PATH
 #elif defined(__MACH__) || defined(__APPLE__)
 #error "not support now"
-#elif defined(__linux__)
+#elif defined(ZCF_SYS_LINUX)
 #include <limits.h>
 #include <unistd.h>
 #include <sys/resource.h>
@@ -52,19 +53,36 @@
 
 namespace zcf{
 
+FILE* sys_popen(const std::string& command, const std::string& mode)
+{
+#ifdef ZCF_SYS_WINDOWS
+    return ::_popen(command.c_str(), mode.c_str());
+#else
+    return ::popen(command.c_str(), mode.c_str());
+#endif
+}
+int sys_pclose(FILE* stream) 
+{
+#ifdef ZCF_SYS_WINDOWS
+    return ::_pclose(stream);
+#else
+    return ::pclose(stream);
+#endif
+}
+
     namespace sys{
 
     std::string getExePath(){
         char buffer[PATH_MAX * 2 + 1] = {0};
         int n = -1;
-    #if defined(_WIN32)
+    #if defined(ZCF_SYS_WINDOWS)
         n = GetModuleFileNameA(NULL, buffer, sizeof(buffer));
     #elif defined(__MACH__) || defined(__APPLE__)
         n = sizeof(buffer);
         if (uv_exepath(buffer, &n) != 0) {
             n = -1;
         }
-    #elif defined(__linux__)
+    #elif defined(ZCF_SYS_LINUX)
         n = readlink("/proc/self/exe", buffer, sizeof(buffer));
     #endif
 
@@ -75,7 +93,7 @@ namespace zcf{
             filePath = buffer;
         }
 
-    #if defined(_WIN32)
+    #if defined(ZCF_SYS_WINDOWS)
         //windows->unix
         for (auto &ch : filePath) {
             if (ch == '\\') {
@@ -124,8 +142,7 @@ namespace zcf{
     }
 
     std::string execute(const std::string& command){
-        FILE *fPipe = NULL;
-        fPipe = ::popen(command.data(), "r");
+        FILE* fPipe = sys_popen(command, "r");
         if(!fPipe){
             return "";
         }
@@ -134,10 +151,10 @@ namespace zcf{
         while(fgets(buff, sizeof(buff) - 1, fPipe)){
             ret.append(buff);
         }
-        ::pclose(fPipe);
+        sys_pclose(fPipe);
         return ret;
     }
-
+#ifdef ZCF_SYS_LINUX
     void runDaemon(){
         // Fork the process and have the parent exit. If the process was started
         // from a shell, this returns control to the user. Forking a new process is
@@ -207,7 +224,7 @@ namespace zcf{
         zlog("process running in:{}",running_dir);
         chdir(running_dir.c_str());
     }
-
+#endif
     void setThreadName(const std::string& name){
         std::string set_name = name;
 

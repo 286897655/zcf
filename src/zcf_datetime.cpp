@@ -31,7 +31,7 @@
  */
 
 #include "zcf/zcf_datetime.hpp"
-
+#include "zcf/zcf_config.hpp"
 #include <ctime>
 
 namespace zcf{

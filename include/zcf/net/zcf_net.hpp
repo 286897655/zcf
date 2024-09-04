@@ -33,9 +33,13 @@
 #ifndef ZCF_NET_HPP_
 #define ZCF_NET_HPP_
 
-#include <memory>
-#include <sys/socket.h>
+#include <string>
 #include <zcf/zcf_utility.hpp>
+#if defined(ZCF_SYS_WINDOWS)
+#include <WinSock2.h>
+#elif defined(ZCF_SYS_LINUX)
+#include <sys/socket.h>
+#endif
 
 namespace zcf{
 
