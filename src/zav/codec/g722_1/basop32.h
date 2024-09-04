@@ -20,7 +20,7 @@
 
 int32_t L_add(int32_t L_var1, int32_t L_var2);
 
-static __inline__ int16_t saturate(int32_t amp)
+static inline int16_t saturate(int32_t amp)
 {
     int16_t amp16;
 
@@ -34,13 +34,13 @@ static __inline__ int16_t saturate(int32_t amp)
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int16_t xround(int32_t L_var1)
+static inline int16_t xround(int32_t L_var1)
 {
     return (int16_t) (L_add(L_var1, (int32_t) 0x00008000L) >> 16);
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int16_t abs_s(int16_t var1)
+static inline int16_t abs_s(int16_t var1)
 {
     if (var1 == INT16_MIN)
         return INT16_MAX;
@@ -48,37 +48,37 @@ static __inline__ int16_t abs_s(int16_t var1)
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int16_t add(int16_t var1, int16_t var2)
+static inline int16_t add(int16_t var1, int16_t var2)
 {
     return saturate((int32_t) var1 + var2);
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int16_t sub(int16_t var1, int16_t var2)
+static inline int16_t sub(int16_t var1, int16_t var2)
 {
     return saturate((int32_t) var1 - var2);
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int16_t mult(int16_t var1, int16_t var2)
+static inline int16_t mult(int16_t var1, int16_t var2)
 {
     return saturate(((int32_t) var1*(int32_t) var2) >> 15);
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int32_t L_mult0(int16_t var1, int16_t var2)
+static inline int32_t L_mult0(int16_t var1, int16_t var2)
 {
     return (int32_t) var1*(int32_t) var2;
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int32_t L_mac0(int32_t L_var3, int16_t var1, int16_t var2)
+static inline int32_t L_mac0(int32_t L_var3, int16_t var1, int16_t var2)
 {
     return L_add(L_var3, L_mult0(var1, var2));
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int32_t L_mult(int16_t var1, int16_t var2)
+static inline int32_t L_mult(int16_t var1, int16_t var2)
 {
     int32_t L_var_out;
 
@@ -89,7 +89,7 @@ static __inline__ int32_t L_mult(int16_t var1, int16_t var2)
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int16_t negate(int16_t var1)
+static inline int16_t negate(int16_t var1)
 {
     if (var1 == INT16_MIN)
         return INT16_MAX;
@@ -97,7 +97,7 @@ static __inline__ int16_t negate(int16_t var1)
 }
 /*- End of function --------------------------------------------------------*/
 
-static __inline__ int32_t L_mac(int32_t L_var3, int16_t var1, int16_t var2)
+static inline int32_t L_mac(int32_t L_var3, int16_t var1, int16_t var2)
 {
     return L_add(L_var3, L_mult(var1, var2));
 }

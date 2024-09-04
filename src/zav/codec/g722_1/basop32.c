@@ -126,7 +126,7 @@ int32_t L_shr(int32_t L_var1, int16_t var2)
 /*! \brief Find the bit position of the highest set bit in a word
     \param bits The word to be searched
     \return The bit number of the highest set bit, or -1 if the word is zero. */
-static __inline__ int top_bit(unsigned int bits)
+static inline int top_bit(unsigned int bits)
 {
     int res;
 
