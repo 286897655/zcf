@@ -77,10 +77,29 @@ static void cross_byte_u8_x86_sse(const uint8_t* buffer,size_t size)
 #endif
 
 #ifdef __ARM_NEON
-#error "arm not support shuffle,do it in other"
 static void cross_byte_u8_arm_neon(const uint8_t* buffer,size_t size){
-
-
+    constexpr static size_t CROSS_BYTE = 128 / 8;
+    constexpr static size_t LOG2_CROSS_BYTE = 4;
+    size_t count = size >> LOG2_CROSS_BYTE;
+    size_t mod = size & (CROSS_BYTE - 1);
+    for(size_t i = 0 ;i < count ; i++){
+        uint8_t* pos = (uint8_t*)buffer + i * CROSS_BYTE;
+        // use in tbl (table loopup)
+        // static constexpr uint8_t data[16] = {1,  0,  3,  2,
+        //                                      5,  4,  7,  6,
+        //                                      9,  8, 11, 10,
+        //                                     13, 12, 15, 14};
+        // // load in little endian
+        // const static uint8x16_t ShuffleRev = vld1q_u8(data);
+        // // Load 16 bytes at once into one 16-byte register
+        // uint8x16_t load = vld1q_u8(pos);
+        // uint8x16_t cross = vqtbl1q_u8(load,ShuffleRev);
+        // vst1q_u8(pos,cross);
+        // use in reverse
+        vst1q_u8(pos,vrev16q_u8(vld1q_u8(pos)));
+    }
+    // un 16bytes aligned use c code
+    cross_byte_u8_c(buffer + CROSS_BYTE * count,mod);
 };
 #endif
 

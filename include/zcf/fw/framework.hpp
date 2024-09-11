@@ -2,6 +2,7 @@
 #define ZCF_FW_HPP_
 
 #include <memory>
+#include <functional>
 
 namespace fw{
 

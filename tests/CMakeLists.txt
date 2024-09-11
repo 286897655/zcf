@@ -16,6 +16,11 @@ if(ARCH_AMD64)
     target_link_libraries(x86_simd zcf pthread)
 endif()
 
+if(ARCH_AARCH64)
+    add_executable(arm_simd arm_simd.cpp)
+    target_link_libraries(arm_simd zcf pthread)
+endif()
+
 add_executable(bench bench.cpp)
 target_link_libraries(bench zcf pthread)
 

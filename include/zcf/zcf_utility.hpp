@@ -33,6 +33,7 @@
 #ifndef ZCF_UTILITY_HPP_
 #define ZCF_UTILITY_HPP_
 
+// 
 #include <memory>
 #include <zcf/zcf_config.hpp>
 
@@ -50,6 +51,21 @@
 
 
 #define Z_UNUSED(x) (void)x;
+
+// forward declare macro for obvirousely forward declaration
+#define Z_FWD_DECLARE_CLASS(name) class name;
+#define Z_FWD_DECLARE_STRUCT(name) struct name;
+
+#ifndef Z_STR
+// to string
+#define STR_1(x) #x
+// contact string
+#define JOIN_1(x,y) x##y
+
+
+#define Z_STR(x) STR_1(x)
+#define Z_BUILD_STR(x,y) JOIN_1(x,y)
+#endif
 
 #ifndef Z_INT_SUCCESS
 #define Z_INT_SUCCESS 0

@@ -39,13 +39,11 @@
 
 
 #if (defined(linux) || defined(__linux) || defined(__linux__) || defined(__GNU__) || defined(__GLIBC__)) && !defined(_CRAYC)
-
 #define ZCF_SYS_LINUX 1
-
 #elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-
 #define ZCF_SYS_WINDOWS 1
-
+#elif defined (__MACH__) && defined (__APPLE__)
+#define ZCF_SYS_MACH 1
 #endif
 
 #if defined(ZCF_SYS_LINUX) && defined(ZCF_SYS_WINDOWS)
