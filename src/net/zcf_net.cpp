@@ -32,7 +32,7 @@
 
 #include "zcf/net/zcf_net.hpp"
 #include "zcf/log/zcf_log.h"
-#include "zcf/zcf_string.hpp"
+#include "zcf/strings.hpp"
 #if defined(ZCF_SYS_WINDOWS)
 #include <ws2ipdef.h>
 #include <ws2tcpip.h>
@@ -119,9 +119,9 @@ namespace socket{
     }
 
     std::pair<std::string,int> parse_ip_colon_port(const std::string& ip_colon_port){
-        std::vector<std::string> splits = zcf::str_split(ip_colon_port,":");
+        std::vector<std::string> splits = strings::split(ip_colon_port,":");
         
-        return std::make_pair(splits[0],zcf::str_conv2<int>(splits[1]));
+        return std::make_pair(splits[0], strings::conv_to<int>(splits[1]));
     }
 };
 
@@ -172,6 +172,10 @@ std::string socket_addr::ip() const{
 
 int socket_addr::port() const{
     return socket::retrieve_port((struct sockaddr *)addr_storage_.get());
+}
+
+std::string socket_addr::format() const{
+    return strings::format("%s:%d",ip().c_str(),port());
 }
 
 socket_type_t socket_addr::socket_type() const{

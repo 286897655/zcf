@@ -33,7 +33,7 @@
 #include "zcf/zcf_filesystem.hpp"
 #include "zcf/zcf_sys.hpp"
 #include "zcf/log/zcf_log.h"
-#include "zcf/zcf_string.hpp"
+#include "zcf/strings.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -133,7 +133,7 @@ std::string Path::Relative2Absolute(const std::string& relative,const std::strin
         return currentPath;
     }
 
-    std::vector<std::string> path_split = str_split(relative,"/");
+    std::vector<std::string> path_split = strings::split(relative,"/");
     for (auto &dir : path_split) {
         if (dir.empty() || dir == ".") {
             // empty or this path

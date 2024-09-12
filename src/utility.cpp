@@ -27,18 +27,20 @@
 
  /**
  * @author zhaoj 286897655@qq.com
- * @brief 
+ * @brief some utility class or function use lick utility::xxxxxx
  */
 
-#include "zcf/zcf_string.hpp"
+#include "zcf/utility.hpp"
+#include <sstream>
 #include <iomanip>
 
 namespace zcf{
-std::string hexDump(const uint8_t* data,size_t size,size_t max_size){
-    Z_ASSERT(data);
+namespace utility{
+
+std::string hexdump_format(const uint8_t* data,size_t size,size_t max_size){
     size = std::min(size,max_size);
 
-    constexpr static size_t PRINT_NUM = 16;
+    static constexpr size_t PRINT_NUM = 16;
 
     std::ostringstream oss;
     {
@@ -83,4 +85,6 @@ std::string hexDump(const uint8_t* data,size_t size,size_t max_size){
 
     return oss.str();
 }
-};//!namespace zcf
+
+}//!namespace utilty
+}//!namespace zcf

@@ -33,7 +33,11 @@
 #ifndef ZCF_FLAGS_HPP_
 #define ZCF_FLAGS_HPP_
 
-#include <zcf/zcf_string.hpp>
+#include <string>
+#include <sstream>
+#include <memory>
+#include <vector>
+#include <string.h>
 
 /**
  * class option used to define some options

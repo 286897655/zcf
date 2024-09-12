@@ -33,7 +33,7 @@
 #include "zcf/zcf_flags.hpp"
 #include <sstream>
 #include <fstream>
-#include <string.h>
+#include <algorithm>
 
 namespace zcf{
 

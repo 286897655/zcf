@@ -27,17 +27,48 @@
 
  /**
  * @author zhaoj 286897655@qq.com
- * @brief 
+ * @brief strings utility
+ * 
+ * using like strings::xxxxxx
  */
 
-#ifndef ZCF_H_
-#define ZCF_H_
-/// include all useful header
-#include <zcf/log/zcf_log.h>
+#include "zcf/strings.hpp"
+#include <string.h>
 
 namespace zcf{
+namespace strings{
 
+std::vector<std::string> split(const std::string& origin,const char* delim)
+{
+    std::vector<std::string> ret;
+    size_t last = 0;
+    auto index = origin.find(delim, last);
+    while (index != std::string::npos) {
+        if (index - last > 0) {
+            ret.push_back(origin.substr(last, index - last));
+        }
+        last = index + ::strlen(delim);
+        index = origin.find(delim, last);
+    }
+    if (!origin.size() || origin.size() - last > 0) {
+        ret.push_back(origin.substr(last));
+    }
+    return ret;
+}
+
+std::string replace_all(const std::string& origin,const std::string& old_pattern,const std::string& new_pattern)
+{
+    if(!old_pattern.compare(new_pattern))
+        return origin;
+    
+    size_t pos = 0;
+    std::string ret_val = origin;
+    while((pos = ret_val.find(old_pattern,pos)) != std::string::npos){
+        ret_val.replace(pos,old_pattern.length(),new_pattern);
+    }
+
+    return ret_val;
+}
+
+}//!namespace strings
 }//!namespace zcf
-
-
-#endif //!ZCF_H_

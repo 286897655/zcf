@@ -27,17 +27,26 @@
 
  /**
  * @author zhaoj 286897655@qq.com
- * @brief 
+ * @brief some utility class or function use lick utility::xxxxxx
  */
 
-#ifndef ZCF_H_
-#define ZCF_H_
-/// include all useful header
-#include <zcf/log/zcf_log.h>
+#ifndef ZCF_UTILITYS_HPP_
+#define ZCF_UTILITYS_HPP_
+
+#include <string>
 
 namespace zcf{
+namespace utility{
 
+/// @brief formatter binary data to string as hex format for readble or log
+/// @param data 
+/// @param size 
+/// @param max_size 
+/// @return 
+std::string hexdump_format(const uint8_t* data,size_t size,size_t max_size = 4096);
+
+
+}//!namespace utility
 }//!namespace zcf
 
-
-#endif //!ZCF_H_
+#endif //!ZCF_UTILITYS_HPP_

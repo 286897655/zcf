@@ -44,10 +44,11 @@
 namespace zcf{
 
 enum class socket_type_t{
-    SOCKET_INVALID          = -1,
-    SOCKET_STREAM           = 1,
-    SOCKET_DATAGRAMS        = 2,
-    SOCKET_RAW              = 3
+    SOCKET_INVALID          = -1,// INVALID
+    SOCKET_UNKNOWN          = 0, // UNKNOWN
+    SOCKET_STREAM           = 1, // TCP
+    SOCKET_DATAGRAMS        = 2, // UDP
+    SOCKET_RAW              = 3  
 };
 
 enum class socket_end_t{
@@ -56,6 +57,10 @@ enum class socket_end_t{
 };
 
 namespace socket{
+static constexpr const char* kSOCKET_TYPE_STRING[4] = {"UNKNOWN","TCP","UDP","RAW"};
+
+inline std::string str_of_type(socket_type_t type){ return std::string(kSOCKET_TYPE_STRING[static_cast<int>(type)]); }
+
     int cmp_sockaddr(const struct sockaddr* first,const struct sockaddr* second);
     /**
      * @brief compare socaddr storage
@@ -84,6 +89,7 @@ public:
 public:
     std::string ip() const;
     int port() const;
+    std::string format() const;
     socket_type_t socket_type() const;
     struct sockaddr* addr() const;
 

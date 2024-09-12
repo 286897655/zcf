@@ -33,7 +33,7 @@
 #include "zcf/zcf_sys.hpp"
 #include "zcf/zcf_config.hpp"
 #include "zcf/log/zcf_log.h"
-#include "zcf/zcf_string.hpp"
+#include "zcf/strings.hpp"
 #include "zcf/zcf_datetime.hpp"
 #include <sstream>
 #include <iostream>
@@ -261,7 +261,7 @@ int sys_pclose(FILE* stream)
             ref.emplace_back(symbol);
             static auto addr2line = [](const std::string &address) {
                 std::string exePath = getExePath();
-                std::string command = zcf::str_printf_format("addr2line -C -f -e %s %s",exePath.c_str(),address.c_str());
+                std::string command = strings::format("addr2line -C -f -e %s %s",exePath.c_str(),address.c_str());
 
                 return execute(command);
             };
