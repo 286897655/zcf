@@ -186,11 +186,6 @@ CFileHandle::~CFileHandle(){
     }
 }
 
-bool File::Exists(const std::string& filewithpath){
-    std::ifstream ftest(filewithpath);
-    return ftest.good();
-}
-
 std::shared_ptr<CFileHandle> File::Create(const std::string& filewithpath,const char* mode){
     if(filewithpath.empty()){
         zlog_warn("File Create empty filename.");

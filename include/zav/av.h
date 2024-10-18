@@ -62,6 +62,22 @@ struct pcm_buf{
     size_t size;
 };
 
+struct audio_fmt{
+    int sample_rate;
+    int channel;
+    int sample_bit;
+    AVCodecID codec;
+};
+
+struct frame_buffer{
+    uint8_t* buffer;
+    size_t size;
+};
+
+typedef struct{
+    struct audio_fmt fmt;
+    struct frame_buffer frame;
+}audio_frame;
 };//!namespace zav
 
 #endif //!ZAV_AV_H_

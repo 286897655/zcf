@@ -59,7 +59,11 @@ enum class socket_end_t{
 namespace socket{
 static constexpr const char* kSOCKET_TYPE_STRING[4] = {"UNKNOWN","TCP","UDP","RAW"};
 
-inline std::string str_of_type(socket_type_t type){ return std::string(kSOCKET_TYPE_STRING[static_cast<int>(type)]); }
+inline std::string string_of_type(socket_type_t type){ return std::string(kSOCKET_TYPE_STRING[static_cast<int>(type)]); }
+/**
+ * upper case of "UNKNOWN TCP UDP RAW"
+*/
+socket_type_t type_of_str(const std::string& str_type);
 
     int cmp_sockaddr(const struct sockaddr* first,const struct sockaddr* second);
     /**
@@ -84,8 +88,7 @@ inline std::string str_of_type(socket_type_t type){ return std::string(kSOCKET_T
 class socket_addr : public std::enable_shared_from_this<socket_addr>{
 public:
     static std::shared_ptr<socket_addr> from(const struct sockaddr* addr,socket_type_t type);
-    static std::shared_ptr<socket_addr> from(int fd,socket_end_t end_type,socket_type_t type);
-
+    static std::unique_ptr<socket_addr> from(int fd,socket_end_t end_type,socket_type_t type);
 public:
     std::string ip() const;
     int port() const;

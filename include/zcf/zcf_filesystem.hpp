@@ -91,15 +91,6 @@ protected:
 class File{
 public:
     /**
-     * @brief whether file is exists in path
-     * 
-     * @param filewithpath
-     * @return true 
-     * @return false 
-     */
-    static bool Exists(const std::string& filewithpath);
-
-    /**
      * @brief create file and open it to write
      * if path is not exist,we will create path recursively
      * 

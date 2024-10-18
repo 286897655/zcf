@@ -27,25 +27,35 @@
 
  /**
  * @author zhaoj 286897655@qq.com
- * @brief some utility class or function use lick utility::xxxxxx
+ * @brief some utility class or function for filesystem io
  */
 
-#ifndef ZCF_UTILITYS_HPP_
-#define ZCF_UTILITYS_HPP_
+#ifndef ZCF_FILE_H_
+#define ZCF_FILE_H_
 
 #include <string>
 
 namespace zcf{
-namespace utility{
+    
+namespace io{
 
-/// @brief formatter binary data to string as hex format for readble or log
-/// @param data 
-/// @param size 
-/// @param max_size 
-/// @return 
-std::string hexdump_format(const uint8_t* data,size_t size,size_t max_size = 4096);
+class File{
+public:
+    /**
+     * @brief whether file is exists in path
+     * 
+     * @param filewithpath
+     * @return true 
+     * @return false 
+     */
+    static bool Exists(const std::string& filewithpath);
+};
 
-}//!namespace utility
-}//!namespace zcf
 
-#endif //!ZCF_UTILITYS_HPP_
+};//!namespace io
+
+
+};//!namespace zcf
+
+
+#endif //!ZCF_FILE_HPP_

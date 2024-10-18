@@ -33,6 +33,7 @@
 #include "zcf/net/zcf_net.hpp"
 #include "zcf/log/zcf_log.h"
 #include "zcf/strings.hpp"
+#include "zcf/memory.hpp"
 #if defined(ZCF_SYS_WINDOWS)
 #include <ws2ipdef.h>
 #include <ws2tcpip.h>
@@ -43,6 +44,17 @@
 namespace zcf{
 
 namespace socket{
+socket_type_t type_of_str(const std::string& str_type)
+{
+    if(str_type == "TCP"){
+        return socket_type_t::SOCKET_STREAM;
+    }else if(str_type == "UDP"){
+        return socket_type_t::SOCKET_DATAGRAMS;
+    }else if(str_type == "RAW"){
+        return socket_type_t::SOCKET_RAW;
+    }
+    return socket_type_t::SOCKET_UNKNOWN;
+}
     int cmp_sockaddr(const struct sockaddr* first,const struct sockaddr* second){
         return cmp_sockaddr((const struct sockaddr_storage*)first,(const struct sockaddr_storage*)second);
     }
@@ -137,33 +149,33 @@ std::shared_ptr<socket_addr> socket_addr::from(const struct sockaddr* addr,socke
     return shared_addr;
 }
 
-std::shared_ptr<socket_addr> socket_addr::from(int fd,socket_end_t end_type,socket_type_t type){
+std::unique_ptr<socket_addr> socket_addr::from(int fd,socket_end_t end_type,socket_type_t type){
     if(type == socket_type_t::SOCKET_INVALID){
         return nullptr;
     }
 
-    std::shared_ptr<socket_addr> shared_addr = std::make_shared<socket_addr>();
-    shared_addr->addr_storage_.reset(new sockaddr_storage());
-    shared_addr->socket_type_ = type;
+    std::unique_ptr<socket_addr> unique_addr = std::make_unique<socket_addr>();
+    unique_addr->addr_storage_.reset(new sockaddr_storage());
+    unique_addr->socket_type_ = type;
     
     socklen_t addr_len = sizeof(sockaddr_storage);
     if(end_type == socket_end_t::SOCKET_END_PEER){// get peer/remote
-        if(::getpeername(fd,(struct sockaddr*)shared_addr->addr_storage_.get(),&addr_len) < 0){
+        if(::getpeername(fd,(struct sockaddr*)unique_addr->addr_storage_.get(),&addr_len) < 0){
             zlog("fd can't getpeername:{}",fd);
             return nullptr;
         }
     }else{// get local
-        if(::getsockname(fd,(struct sockaddr*)shared_addr->addr_storage_.get(),&addr_len) < 0){
+        if(::getsockname(fd,(struct sockaddr*)unique_addr->addr_storage_.get(),&addr_len) < 0){
             zlog("fd can't getsockename:{}",fd);
             return nullptr;
         }
     }
     zlog("fd to ip port:{} -> {}:{}",fd,
-        socket::retrieve_ip((struct sockaddr *)(shared_addr->addr_storage_.get())),
-        socket::retrieve_port((struct sockaddr *)(shared_addr->addr_storage_.get())));
+        socket::retrieve_ip((struct sockaddr *)(unique_addr->addr_storage_.get())),
+        socket::retrieve_port((struct sockaddr *)(unique_addr->addr_storage_.get())));
     
 
-    return shared_addr;
+    return unique_addr;
 }
 
 std::string socket_addr::ip() const{

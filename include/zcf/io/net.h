@@ -27,25 +27,14 @@
 
  /**
  * @author zhaoj 286897655@qq.com
- * @brief some utility class or function use lick utility::xxxxxx
+ * @brief some utility class or function for network io
  */
+#ifndef ZCF_NET_H_
+#define ZCF_NET_H_
 
-#ifndef ZCF_UTILITYS_HPP_
-#define ZCF_UTILITYS_HPP_
-
-#include <string>
 
 namespace zcf{
-namespace utility{
 
-/// @brief formatter binary data to string as hex format for readble or log
-/// @param data 
-/// @param size 
-/// @param max_size 
-/// @return 
-std::string hexdump_format(const uint8_t* data,size_t size,size_t max_size = 4096);
+};
 
-}//!namespace utility
-}//!namespace zcf
-
-#endif //!ZCF_UTILITYS_HPP_
+#endif//!ZCF_NET_H_

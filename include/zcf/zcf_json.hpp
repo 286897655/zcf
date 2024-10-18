@@ -37,6 +37,11 @@
 
 namespace zcf{
     using json = nlohmann::json;
+
+    // template<typename... Args>
+    // void json_contains(json& json,Args &&...args){
+    //     json.contains(std::forward<Args>(args)...);
+    // }
 }//!namespace zcf
 
 

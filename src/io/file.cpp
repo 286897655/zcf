@@ -27,25 +27,21 @@
 
  /**
  * @author zhaoj 286897655@qq.com
- * @brief some utility class or function use lick utility::xxxxxx
+ * @brief file utility
+ * 
  */
-
-#ifndef ZCF_UTILITYS_HPP_
-#define ZCF_UTILITYS_HPP_
-
-#include <string>
+#include "zcf/io/file.h"
+#include <fstream>
 
 namespace zcf{
-namespace utility{
 
-/// @brief formatter binary data to string as hex format for readble or log
-/// @param data 
-/// @param size 
-/// @param max_size 
-/// @return 
-std::string hexdump_format(const uint8_t* data,size_t size,size_t max_size = 4096);
+namespace io{
 
-}//!namespace utility
+bool File::Exists(const std::string& filewithpath){
+    std::ifstream ftest(filewithpath);
+    return ftest.good();
+}
+
+}//!namespace io
+
 }//!namespace zcf
-
-#endif //!ZCF_UTILITYS_HPP_
