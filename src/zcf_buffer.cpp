@@ -31,6 +31,7 @@
  */
 #include "zcf/zcf_buffer.hpp"
 #include "zcf/zcf_utility.hpp"
+#include "zcf/memory.hpp"
 #ifdef __x86_64__
 #include <immintrin.h>
 #elif __ARM_NEON

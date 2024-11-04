@@ -30,35 +30,31 @@
  * @brief 
  */
 
-#ifndef ZCF_BUFFER_HPP_
-#define ZCF_BUFFER_HPP_
-#include <stddef.h>
-#include <stdint.h>
+#include "zav/proto/rtsp.h"
+
+namespace zav{
+static constexpr const char* kRTSP_TRANSPORT_DESCRIPTION[6] = {"TCP","UDP","MULTICAST","HTTP","WEBSOCKET","UNKNOWN"};
+
+RTSP_TRANSPORT rtsp_transport(const std::string& description){
+    if(description == kRTSP_TRANSPORT_DESCRIPTION[RTSP_TRANSPORT_TCP]){
+        return RTSP_TRANSPORT_TCP;
+    }else if(description == kRTSP_TRANSPORT_DESCRIPTION[RTSP_TRANSPORT_UDP]){
+        return RTSP_TRANSPORT_UDP;
+    }else if(description == kRTSP_TRANSPORT_DESCRIPTION[RTSP_TRANSPORT_UDP_MULTICAST]){
+        return RTSP_TRANSPORT_UDP_MULTICAST;
+    }else if(description == kRTSP_TRANSPORT_DESCRIPTION[RTSP_TRANSPORT_HTTP]){
+        return RTSP_TRANSPORT_HTTP;
+    }else if(description == kRTSP_TRANSPORT_DESCRIPTION[RTSP_TRANSPORT_WEBSOCKET]){
+        return RTSP_TRANSPORT_WEBSOCKET;
+    }
+
+    return RTSP_TRANSPORT_UNKNOWN;
+}
+
+std::string desc_rtsp_transport(RTSP_TRANSPORT transport){
+    return kRTSP_TRANSPORT_DESCRIPTION[transport];
+}
 
 
-namespace zcf{
 
-/**
- * bytes:1 2 3 4 5 6 7 8
- * cross one byte
- *       2 1 4 3 6 5 8 7
- * usefule in int16_t le<->be in simd version
- * 
- * caller assume size = 2*x
- * 
- * default in simd version
- * and have c 
- */
-void cross_byte_u8(const uint8_t* bytes,size_t size);
-void cross_byte_u8_c(const uint8_t* bytes,size_t size);
-void cross_byte_s16(const int16_t* bytes,size_t size);
-void cross_byte_s16_c(const int16_t* bytes,size_t size);
-
-class bit_buffer{
-
-};
-
-}//!namespace zcf
-
-
-#endif //!ZCF_BUFFER_HPP_
+};//!namespace zav

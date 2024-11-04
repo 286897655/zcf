@@ -43,6 +43,13 @@
 namespace zcf{
 
 namespace strings{
+
+static constexpr const char kEmpty[] = "";
+static constexpr const char kCR[] = "\r";//0x0D
+static constexpr const char kLF[] = "\n";//0x0A
+static constexpr const char kCRLF[] = "\r\n";//0x0D 0x0A
+static constexpr const char kCRLF_CRLF[] = "\r\n\r\n";//0x0D 0x0A 0x0D 0x0A
+
 /// @brief left trim string
 /// @param s 
 /// @return 
