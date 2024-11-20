@@ -31,7 +31,7 @@
  */
 
 #include "zcf/extern/logcb.h"
-#include "zcf/log/zcf_log.h"
+#include <zlog/log.h>
 extern "C" void log_callback(const char* func,const char* file,int line, ...){
     va_list vlist;
     va_start(vlist,11);

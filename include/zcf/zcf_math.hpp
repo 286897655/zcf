@@ -33,7 +33,7 @@
 #ifndef ZCF_MATH_HPP_
 #define ZCF_MATH_HPP_
 
-#include <zcf/zcf_utility.hpp>
+#include <zpkg/utility.h>
 #include <type_traits>
 
 namespace zcf{

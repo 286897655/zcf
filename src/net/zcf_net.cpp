@@ -31,13 +31,13 @@
  */
 
 #include "zcf/net/zcf_net.hpp"
-#include "zcf/log/zcf_log.h"
+#include <zlog/log.h>
 #include "zcf/strings.hpp"
 #include "zcf/memory.hpp"
-#if defined(ZCF_SYS_WINDOWS)
+#if defined(Z_SYS_WINDOWS)
 #include <ws2ipdef.h>
 #include <ws2tcpip.h>
-#elif defined(ZCF_SYS_LINUX)
+#elif defined(Z_SYS_LINUX)
 #include <arpa/inet.h>
 #endif
 

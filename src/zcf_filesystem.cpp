@@ -32,7 +32,7 @@
 
 #include "zcf/zcf_filesystem.hpp"
 #include "zcf/zcf_sys.hpp"
-#include "zcf/log/zcf_log.h"
+#include <zlog/log.h>
 #include "zcf/strings.hpp"
 
 #include <fstream>

@@ -74,7 +74,7 @@ namespace sys{
      */
     std::string execute(const std::string& command);
 
-#ifdef ZCF_SYS_LINUX
+#ifdef Z_SYS_LINUX
     /**
      * @brief run as daemon service for linux fork 
      * 

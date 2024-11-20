@@ -1,5 +1,5 @@
 #include "zav/codec/g722_1.h"
-#include "zcf/log/zcf_log.h"
+#include <zlog/log.h>
 #include "zcf/zcf_flags.hpp"
 #include "zav/codec/g711.h"
 #include "zav/av.h"
@@ -47,7 +47,7 @@ int main(int argc,char** argv){
     // 编码为g722.1
     // 解码为pcm
 
-    zcf::logger::create_defaultLogger();
+    zlog::logger::create_defaultLogger();
     zcf::OptionParser option_parser("g711a convert argument:");
     auto option_help = option_parser.add<zcf::Switch>("h","help","print socketproxy help");
     auto option_file = option_parser.add<zcf::Value<std::string>>("i","input","input g711a file");

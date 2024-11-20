@@ -1,5 +1,5 @@
 #include <zcf/fw/framework.hpp>
-#include <zcf/log/zcf_log.h>
+#include <zlog/log.h>
 
 class ChannelEvent : public std::enable_shared_from_this<ChannelEvent>{
 public:

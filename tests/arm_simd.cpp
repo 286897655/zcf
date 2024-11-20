@@ -1,11 +1,11 @@
 #include <zcf/zcf_buffer.hpp>
 #include <zcf/zcf_string.hpp>
-#include <zcf/log/zcf_log.h>
+#include <zlog/log.h>
 
 #include <arm_neon.h>
 
 int main(int argc,char** argv){
-    zcf::logger::create_defaultLogger();
+    zlog::logger::create_defaultLogger();
 
     uint8_t origin[16] = {0x00,0x01,0x02,0x03,
                                 0x04,0x05,0x06,0x07,

@@ -1,5 +1,5 @@
 #include "zav/codec/g722_1.h"
-#include "zcf/log/zcf_log.h"
+#include <zlog/log.h>
 #include "zcf/zcf_flags.hpp"
 #include <iostream>
 #include "zcf/zcf_buffer.hpp"
@@ -7,7 +7,7 @@
 
 int main(int argc,char** argv){
     const static std::string pcm_file = "pcm.dat";
-    zcf::logger::create_defaultLogger();
+    zlog::logger::create_defaultLogger();
     zcf::OptionParser option_parser("g7221 convert argument:");
     auto option_help = option_parser.add<zcf::Switch>("h","help","print g7221 help");
     auto option_file = option_parser.add<zcf::Value<std::string>>("i","input","input ");

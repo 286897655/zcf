@@ -1,6 +1,6 @@
 #include <iostream>
 #include <asio.hpp>
-#include <zcf/log/zcf_log.h>
+#include <zlog/log.h>
 #include <zcf/zcf_flags.hpp>
 #include <zcf/net/zcf_net.hpp>
 
@@ -195,7 +195,7 @@ int proxy_port_;
 
 
 int main(int argc,char** argv){
-    zcf::logger::create_defaultLogger();
+    zlog::logger::create_defaultLogger();
     zcf::OptionParser option_parser("socketproxy argument:");
     auto option_help = option_parser.add<zcf::Switch>("h","help","print socketproxy help");
     auto option_port = option_parser.add<zcf::Value<int>>("l","listen","proxy listen of port");

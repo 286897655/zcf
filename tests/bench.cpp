@@ -1,8 +1,8 @@
-#include <zcf/log/zcf_log.h>
+#include <zlog/log.h>
 #include <zcf/zcf_buffer.hpp>
 #include <chrono>
 int main(int argc,char** argv){
-    zcf::logger::create_defaultLogger();
+    zlog::logger::create_defaultLogger();
 
     uint8_t origin[320];
     for(int i = 0;i<320;i++){

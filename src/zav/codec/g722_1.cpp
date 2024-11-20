@@ -1,7 +1,7 @@
 #include "zav/codec/g722_1.h"
 #include "g722_1/g722_1.h"
 #include <memory>
-#include <zcf/log/zcf_log.h>
+#include <zlog/log.h>
 #include <zcf/zcf_buffer.hpp>
 
 namespace zav{
@@ -32,7 +32,8 @@ void G722_1_Decoder::Reset(G722_1_SupportSampleRate samplerate,G722_1_BitRateMod
     amp_buf_ = new int16_t[MAX_G722_1_FRAME * amp_frame_len_];
     g7221_frame_len_ = bitrate / 50 / 8;
     zlog("G722_1_Decoder:packmode {} , samplerate {} , bitrate {} , frame_size {} ,g7221_frame_len {}",
-        pack_mode_,samplerate,bitrate,amp_frame_len_,g7221_frame_len_);
+        static_cast<int>(pack_mode_),static_cast<int>(samplerate),static_cast<int>(bitrate),
+        amp_frame_len_,g7221_frame_len_);
 }
 
 size_t G722_1_Decoder::Decode(const uint8_t* g722_1_data,size_t len,const int16_t* amp){

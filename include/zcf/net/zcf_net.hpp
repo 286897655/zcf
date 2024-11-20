@@ -34,10 +34,10 @@
 #define ZCF_NET_HPP_
 
 #include <string>
-#include <zcf/zcf_utility.hpp>
-#if defined(ZCF_SYS_WINDOWS)
+#include <zpkg/utility.h>
+#if defined(Z_SYS_WINDOWS)
 #include <WinSock2.h>
-#elif defined(ZCF_SYS_LINUX)
+#elif defined(Z_SYS_LINUX)
 #include <sys/socket.h>
 #endif
 
@@ -111,7 +111,7 @@ public:
     ~socket_addr()=default;
 
 private:
-    ZCF_DISABLE_COPY_MOVE(socket_addr);
+    Z_DISABLE_COPY_MOVE(socket_addr);
 private:
     std::unique_ptr<struct sockaddr_storage> addr_storage_;
     socket_type_t socket_type_;

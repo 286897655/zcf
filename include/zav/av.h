@@ -83,13 +83,13 @@ typedef struct{
  * some constant strings
 */
 namespace strings{
-static constexpr const char kGB28181[] = "gb28181";//gb28181
-static constexpr const char kSCHEMA_RTMP[] = "rtmp";//rtmp
-static constexpr const char kSCHEMA_RTMPS[] = "rtmps";//rtmps
-static constexpr const char kSCHEMA_RTSP[] = "rtsp";//rtsp
-static constexpr const char kSCHEMA_RTSPS[] = "rtsps";//rtsps
-static constexpr const char kSCHEMA_HTTP[] = "http";//http
-static constexpr const char kSCHEMA_HTTPS[] = "https";//https
+constexpr const char kGB28181[] = "gb28181";//gb28181
+constexpr const char kSCHEMA_RTMP[] = "rtmp";//rtmp
+constexpr const char kSCHEMA_RTMPS[] = "rtmps";//rtmps
+constexpr const char kSCHEMA_RTSP[] = "rtsp";//rtsp
+constexpr const char kSCHEMA_RTSPS[] = "rtsps";//rtsps
+constexpr const char kSCHEMA_HTTP[] = "http";//http
+constexpr const char kSCHEMA_HTTPS[] = "https";//https
 };
 
 };//!namespace zav

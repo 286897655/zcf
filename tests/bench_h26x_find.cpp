@@ -1,11 +1,11 @@
-#include <zcf/log/zcf_log.h>
+#include <zlog/log.h>
 #include <zcf/zcf_flags.hpp>
 #include <chrono>
 #include <iostream>
 #include "zav/codec/h26x.h"
 
 int main(int argc,char** argv){
-    zcf::logger::create_defaultLogger();
+    zlog::logger::create_defaultLogger();
 
     zcf::OptionParser option_parser("bench_h26x argument:");
     auto option_help = option_parser.add<zcf::Switch>("h","help","print bench_h26x help");

@@ -33,7 +33,7 @@
 #ifndef ZCF_FILESYSTEM_HPP_
 #define ZCF_FILESYSTEM_HPP_
 
-#include <zcf/zcf_utility.hpp>
+#include <zpkg/utility.h>
 #include <string>
 #include <memory>
 #include <vector>
@@ -109,7 +109,7 @@ public:
     std::vector<std::string> FileList();
     static std::vector<std::string> GetFileList(const std::string& path);
 private:
-    ZCF_DISABLE_COPY_MOVE(Dir);
+    Z_DISABLE_COPY_MOVE(Dir);
 };
 
 };//!namespace zcf
